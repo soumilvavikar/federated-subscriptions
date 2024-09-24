@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Message {
+  id       Int      @id @default(autoincrement())
+  sentTime DateTime @default(now())
+  text     String
+  sentFrom User     @relation(name: "MessagesSent", fields: [senderId], references: [id])
+  sentTo   User     @relation(name: "MessagesReceived", fields: [receiverId], references: [id])
+
+  senderId           Int
+  receiverId         Int
+  parentConversation Conversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId     Int?
+}
+
+model Conversation {
+  id           Int                       @id @default(autoincrement())
+  openedTime   DateTime                  @default(now())
+  messages     Message[]
+  participants ConversationParticipant[]
+}
+
+// Relation between a Conversation and one of its Participants
+model ConversationParticipant {
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId Int
+  participant    User         @relation(fields: [participantId], references: [id])
+  participantId  Int
+
+  @@id([conversationId, participantId])
+}
+
+model User {
+  id               Int                       @id @default(autoincrement())
+  name             String
+  role             String                    @default("guest")
+  receivedMessages Message[]                 @relation(name: "MessagesReceived")
+  sentMessages     Message[]                 @relation(name: "MessagesSent")
+  conversation     ConversationParticipant[]
+}

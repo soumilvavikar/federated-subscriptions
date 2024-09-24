@@ -1,0 +1,67 @@
+{
+  "name": "airlock-messages-subgraph",
+  "private": true,
+  "description": "The messages subgraph in the Airlock API",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apollographql/subgraph-template-typescript-apollo-server"
+  },
+  "homepage": "https://github.com/apollographql/subgraph-template-typescript-apollo-server#readme",
+  "bugs": {
+    "url": "https://github.com/apollographql/subgraph-template-typescript-apollo-server/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=18.0"
+  },
+  "prisma": {
+    "seed": "ts-node src/datasources/prisma/seed.ts",
+    "schema": "src/datasources/prisma/schema.prisma"
+  },
+  "scripts": {
+    "build": "npm run codegen && tsc",
+    "codegen": "graphql-codegen",
+    "postinstall": "npm run build && npx prisma migrate dev",
+    "start": "node dist/index.js",
+    "dev": "nodemon --watch \"src/**\" --ext \"ts,json,graphql\" --exec \"npm run build && npm run start\" --ignore ./src/__generated__/ --ignore ./src/datasources/BarAPI.ts",
+    "test": "jest",
+    "db:seed": "prisma migrate dev",
+    "db:generate": "prisma generate"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.3.3",
+    "@apollo/subgraph": "^2.3.1",
+    "@prisma/client": "^5.19.1",
+    "graphql": "latest",
+    "graphql-tag": "latest"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/typescript": "^4.0.0",
+    "@graphql-codegen/typescript-resolvers": "^4.0.0",
+    "@types/jest": "^29.0.3",
+    "@types/node": "^20.0.0",
+    "jest": "^29.0.3",
+    "nodemon": "^3.0.0",
+    "prisma": "^5.19.1",
+    "ts-jest": "^29.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "roots": [
+      "src"
+    ],
+    "globals": {
+      "ts-jest": {
+        "testRegext": "/__tests__/.*.test.ts",
+        "verbose": true
+      }
+    }
+  }
+}
