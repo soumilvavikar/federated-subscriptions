@@ -1,6 +1,6 @@
 # The Messages subgraph
 
-Hello and welcome to the `messages` subgraph: this is the starter code for the Summit 2024 workshop, **Realtime data across your graph with federated subscriptions**. We're happy you're here!
+Hello and welcome to the `messages` subgraph. We're happy you're here!
 
 ## What's `messages` all about?
 
