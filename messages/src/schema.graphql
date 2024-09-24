@@ -11,16 +11,14 @@ type Query {
   conversation(recipientId: ID!): Conversation
 }
 
-type Subscription {
-  # Start a new subscription for messages in a particular conversation, with an optional timestamp cursor to replay from
-  listenForMessageInConversation(id: ID!): Message
-}
-
 type Mutation {
   # Initiate a new conversation with a particular user
   createConversation(recipientId: ID!): Conversation
-  # Submit a new message to a specified conversation
-  sendMessage(message: NewMessageInput!): Message
+}
+
+type Subscription {
+  # Start a new subscription for messages in a particular conversation, with an optional timestamp cursor to replay from
+  listenForMessageInConversation(id: ID!): Message
 }
 
 type Conversation {
