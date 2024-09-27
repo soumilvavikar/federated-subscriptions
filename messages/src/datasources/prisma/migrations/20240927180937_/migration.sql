@@ -5,7 +5,7 @@ CREATE TABLE "Message" (
     "text" TEXT NOT NULL,
     "senderId" TEXT NOT NULL,
     "receiverId" TEXT NOT NULL,
-    "conversationId" INTEGER,
+    "conversationId" TEXT,
     CONSTRAINT "Message_senderId_fkey" FOREIGN KEY ("senderId") REFERENCES "User" ("username") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Message_receiverId_fkey" FOREIGN KEY ("receiverId") REFERENCES "User" ("username") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Message_conversationId_fkey" FOREIGN KEY ("conversationId") REFERENCES "Conversation" ("id") ON DELETE CASCADE ON UPDATE CASCADE
@@ -13,14 +13,13 @@ CREATE TABLE "Message" (
 
 -- CreateTable
 CREATE TABLE "Conversation" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "name" TEXT,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "openedTime" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateTable
 CREATE TABLE "ConversationParticipant" (
-    "conversationId" INTEGER NOT NULL,
+    "conversationId" TEXT NOT NULL,
     "participantId" TEXT NOT NULL,
 
     PRIMARY KEY ("conversationId", "participantId"),

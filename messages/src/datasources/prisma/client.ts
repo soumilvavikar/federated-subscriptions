@@ -8,7 +8,7 @@ export class PrismaDbClient {
 
   prisma = new PrismaClient();
 
-  sendMessageToConversation = async ({ conversationId, text, userId }: { conversationId: number; text: string; userId: string;}) => {
+  sendMessageToConversation = async ({ conversationId, text, userId }: { conversationId: string; text: string; userId: string;}) => {
 
     if (!userId) throw AuthenticationError();
     
@@ -67,7 +67,7 @@ export class PrismaDbClient {
     try {
       const messages = await this.prisma.message.findMany({
         where: {
-          conversationId: parseInt(conversationId),
+          conversationId,
           sentTime: {
             gte: date
           }
@@ -244,6 +244,7 @@ export class PrismaDbClient {
 
         const createdConversation = await this.prisma.conversation.create({
           data: {
+            id: `${userId}-${recipientId}-chat`,
             participants: {
             create: [
               {
@@ -285,7 +286,7 @@ export class PrismaDbClient {
       }
   }
 
-  getConversationParticipants = async ({conversationId, userId}: {conversationId: number, userId: string}) => {
+  getConversationParticipants = async ({conversationId, userId}: {conversationId: string, userId: string}) => {
     // First validate that the user is a member of the conversation
     const userConversations = await this.prisma.conversationParticipant.findMany({
       where: {

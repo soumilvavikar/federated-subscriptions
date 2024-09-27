@@ -31,7 +31,7 @@ async function main() {
 
   const confrontation = await prisma.conversation.create({
     data: {
-      name: "xeno-ripley-chat",
+      id: "xeno-ripley-chat",
       participants: {
         create: [
          {

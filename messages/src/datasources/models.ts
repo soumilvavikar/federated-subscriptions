@@ -7,7 +7,7 @@ export type MessageRepresentation = {
   receiverId?: string;
   sentFrom?: string;
   sentTo?: string;
-  conversationId?: number;
+  conversationId?: string;
 }
 
 export type NewMessageEvent = {

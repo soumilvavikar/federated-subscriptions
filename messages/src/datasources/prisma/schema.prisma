@@ -23,12 +23,11 @@ model Message {
   senderId           String
   receiverId         String
   parentConversation Conversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  conversationId     Int?
+  conversationId     String?
 }
 
 model Conversation {
-  id           Int                       @id @default(autoincrement())
-  name         String?
+  id           String                    @id
   openedTime   DateTime                  @default(now())
   messages     Message[]
   participants ConversationParticipant[]
@@ -37,7 +36,7 @@ model Conversation {
 // Relation between a Conversation and one of its Participants
 model ConversationParticipant {
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  conversationId Int
+  conversationId String
   participant    User         @relation(fields: [participantId], references: [username])
   participantId  String
 
