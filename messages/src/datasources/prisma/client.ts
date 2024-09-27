@@ -101,7 +101,10 @@ export class PrismaDbClient {
       })
 
 
-      return user;
+      return {
+        ...user,
+        id: user.username
+      };
     } catch (e) {
       console.log(e)
       return e
