@@ -3,11 +3,11 @@ export type MessageRepresentation = {
   id: number;
   sentTime: Date;
   text: string;
-  senderId?: number;
-  receiverId?: number;
+  senderId?: string;
+  receiverId?: string;
   sentFrom?: string;
   sentTo?: string;
-  conversationId?: number;
+  conversationId?: string;
 }
 
 export type NewMessageEvent = {
@@ -22,7 +22,8 @@ export type NewMessageEvent = {
 }
 
 export type UserRepresentation = {
-  id: string;
+  id?: string;
+  username?: string;
   lastActiveTime?: number;
   isLoggedIn?: boolean;
 }

@@ -8,7 +8,7 @@ export class PrismaDbClient {
 
   prisma = new PrismaClient();
 
-  sendMessageToConversation = async ({ conversationId, text, userId }: { conversationId: number; text: string; userId: number;}) => {
+  sendMessageToConversation = async ({ conversationId, text, userId }: { conversationId: string; text: string; userId: string;}) => {
 
     if (!userId) throw AuthenticationError();
     
@@ -67,7 +67,7 @@ export class PrismaDbClient {
     try {
       const messages = await this.prisma.message.findMany({
         where: {
-          conversationId: parseInt(conversationId),
+          conversationId,
           sentTime: {
             gte: date
           }
@@ -91,24 +91,27 @@ export class PrismaDbClient {
 
   }
 
-  getUserDetails = async (id: number) => {
+  getUserDetails = async (id: string) => {
 
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: id
+          username: id
         }
       })
 
 
-      return user;
+      return {
+        ...user,
+        id: user.username
+      };
     } catch (e) {
       console.log(e)
       return e
     }
   }
 
-  findUserConversationWithRecipient = async ({ recipientId, userId }: { recipientId: number, userId: number }) => {
+  findUserConversationWithRecipient = async ({ recipientId, userId }: { recipientId: string, userId: string }) => {
     if (!userId) throw AuthenticationError();
     if (userId === recipientId) throw Error("Please provide a recipient ID different from your own")
 
@@ -116,7 +119,7 @@ export class PrismaDbClient {
       // Grab user's conversations
       const { conversation: conversationsArray } = await this.prisma.user.findUnique({
         where: {
-          id: userId
+          username: userId
         },
         include: {
           conversation: {
@@ -166,7 +169,7 @@ export class PrismaDbClient {
     }
   }
   
-  findUserConversations = async (userId: number) => {
+  findUserConversations = async (userId: string) => {
     if (!userId) throw AuthenticationError();
     
     try {
@@ -200,7 +203,7 @@ export class PrismaDbClient {
     }
   }
 
-  createNewConversation = async ({ recipientId, userId }: { recipientId: number, userId: number }) => {
+  createNewConversation = async ({ recipientId, userId }: { recipientId: string, userId: string }) => {
     if (!userId) throw AuthenticationError();
     if (userId === recipientId) throw Error("You can't start a conversation with yourself! Maybe try talking to the mirror instead?")
 
@@ -208,7 +211,7 @@ export class PrismaDbClient {
         // Grab user's conversations
         const user = await this.prisma.user.findUnique({
           where: {
-            id: userId
+            username: userId
           },
           include: {
             conversation: {
@@ -244,19 +247,20 @@ export class PrismaDbClient {
 
         const createdConversation = await this.prisma.conversation.create({
           data: {
+            id: `${userId}-${recipientId}-chat`,
             participants: {
             create: [
               {
                 participant: {
                   connect: {
-                    id: userId
+                    username: userId
                   }
                 }
               },
               {
                 participant: {
                   connect: {
-                    id: recipientId
+                    username: recipientId
                   }
                 }
               }
@@ -285,7 +289,7 @@ export class PrismaDbClient {
       }
   }
 
-  getConversationParticipants = async ({conversationId, userId}: {conversationId: number, userId: number}) => {
+  getConversationParticipants = async ({conversationId, userId}: {conversationId: string, userId: string}) => {
     // First validate that the user is a member of the conversation
     const userConversations = await this.prisma.conversationParticipant.findMany({
       where: {
@@ -326,13 +330,13 @@ export class PrismaDbClient {
         select: {
           participant: {
             select: {
-              id: true
+              username: true
             }
           }
         }
       })
 
-      const { participant: { id: participantId } } = otherParticipant[0]
+      const { participant: { username: participantId } } = otherParticipant[0]
     
       return [ userId, participantId ]
 

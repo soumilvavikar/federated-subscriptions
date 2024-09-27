@@ -17,17 +17,17 @@ model Message {
   id       Int      @id @default(autoincrement())
   sentTime DateTime @default(now())
   text     String
-  sentFrom User     @relation(name: "MessagesSent", fields: [senderId], references: [id])
-  sentTo   User     @relation(name: "MessagesReceived", fields: [receiverId], references: [id])
+  sentFrom User     @relation(name: "MessagesSent", fields: [senderId], references: [username])
+  sentTo   User     @relation(name: "MessagesReceived", fields: [receiverId], references: [username])
 
-  senderId           Int
-  receiverId         Int
+  senderId           String
+  receiverId         String
   parentConversation Conversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  conversationId     Int?
+  conversationId     String?
 }
 
 model Conversation {
-  id           Int                       @id @default(autoincrement())
+  id           String                    @id
   openedTime   DateTime                  @default(now())
   messages     Message[]
   participants ConversationParticipant[]
@@ -36,16 +36,16 @@ model Conversation {
 // Relation between a Conversation and one of its Participants
 model ConversationParticipant {
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  conversationId Int
-  participant    User         @relation(fields: [participantId], references: [id])
-  participantId  Int
+  conversationId String
+  participant    User         @relation(fields: [participantId], references: [username])
+  participantId  String
 
   @@id([conversationId, participantId])
 }
 
 model User {
-  id               Int                       @id @default(autoincrement())
-  name             String
+  username         String                    @id
+  name             String?
   role             String                    @default("guest")
   receivedMessages Message[]                 @relation(name: "MessagesReceived")
   sentMessages     Message[]                 @relation(name: "MessagesSent")
