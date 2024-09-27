@@ -1,0 +1,34 @@
+{
+  "name": "accounts-subgraph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "prisma": {
+    "seed": "node datasources/prisma/seed.js",
+    "schema": "datasources/prisma/schema.prisma"
+  },
+  "scripts": {
+    "start-dev": "nodemon index.js -e *.graphql,*.js",
+    "start": "node index.js",
+    "db:seed": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "postinstall": "npx prisma migrate dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/datasource-rest": "^4.3.2",
+    "@apollo/server": "^4.0.1",
+    "@apollo/subgraph": "^2.1.3",
+    "@prisma/client": "^5.19.1",
+    "axios": "^1.1.3",
+    "dotenv": "^16.4.5",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "prisma": "^5.19.1"
+  }
+}
