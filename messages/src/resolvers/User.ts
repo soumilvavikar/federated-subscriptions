@@ -4,10 +4,7 @@ export const User: Resolvers = {
   User: {
     __resolveReference: async ({ id, ...attributes }, { dataSources }) => {
       const user = await dataSources.db.getUserDetails(id)
-      return { ...attributes, ...user  }
+      return { ...attributes, ...user, id: user.username  }
     },
-    id: (parent) => {
-      return parent.username
-    }
   }
 }
