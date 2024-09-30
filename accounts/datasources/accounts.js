@@ -1,26 +1,64 @@
-const { RESTDataSource } = require("@apollo/datasource-rest");
-require("dotenv").config();
+const fs = require("fs");
+const { users: importedUsers } = require("./accounts_data");
+const filename = "./accounts_data.json";
 
-class AccountsAPI extends RESTDataSource {
-  constructor() {
-    super();
-    this.baseURL = process.env.SERVICE_URL || "http://localhost:4011/";
-  }
-
-  login(username) {
-    return this.get(`login/${username}`);
-  }
-
-  updateUser({ userId, userInfo }) {
-    return this.patch(`user/${userId}`, { body: { ...userInfo } });
+// Use this datasource if Prisma DB fails for any reason
+class AccountsAPI {
+  getUsers() {
+    const data = fs.readFileSync("./datasources/accounts_data.json");
+    const users = JSON.parse(data);
+    return users;
   }
 
   getUser(userId) {
-    return this.get(`user/${userId}`);
+    const users = this.getUsers();
+    const user = users.find((u) => u.username === userId);
+    return user;
   }
 
-  getGalacticCoordinates(userId) {
-    return this.get(`user/${userId}/coordinates`);
+  changeAuthStatus(userId) {
+    const { isLoggedIn, ...user } = this.getUser(userId);
+
+    const updatedUser = {
+      ...user,
+      isLoggedIn: !isLoggedIn,
+      lastActiveTime: Date.now(),
+    };
+
+    this.writeFileChanges(updatedUser);
+
+    return updatedUser;
+  }
+
+  updateUser(userId, { name, profileDescription }) {
+    const user = this.getUser(userId);
+
+    const updatedUser = { ...user, name, profileDescription };
+
+    this.writeFileChanges(updatedUser);
+
+    return updatedUser;
+  }
+
+  writeFileChanges(singleUpdatedUser) {
+    const users = this.getUsers();
+    const { username } = singleUpdatedUser;
+    const filteredUsers = users.filter((u) => u.username !== username);
+
+    const updatedUsers = [...filteredUsers, singleUpdatedUser];
+
+    fs.writeFileSync(
+      "./datasources/accounts_data.json",
+      JSON.stringify(updatedUsers, null, 2),
+      (err) => {
+        if (err) {
+          console.log(err);
+        }
+        return err;
+      }
+    );
+
+    return true;
   }
 }
 

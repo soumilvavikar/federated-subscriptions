@@ -1,0 +1,34 @@
+[
+  {
+    "username": "ripley",
+    "isLoggedIn": false,
+    "lastActiveTime": null,
+    "name": "Ellen Ripley",
+    "role": "guest",
+    "description": "Pretty awesome final girl"
+  },
+  {
+    "username": "kane",
+    "isLoggedIn": false,
+    "lastActiveTime": null,
+    "name": "Gilbert Kane",
+    "role": "Guest",
+    "description": "Spoiler alert - I'm the first to go!"
+  },
+  {
+    "username": "dallas",
+    "isLoggedIn": false,
+    "lastActiveTime": null,
+    "name": "Captain Dallas",
+    "role": "Guest",
+    "description": "Not up to much, just going the wrong direction mostly"
+  },
+  {
+    "username": "xeno",
+    "lastActiveTime": 1727724660681,
+    "name": "Xeno",
+    "role": "Host",
+    "description": "Ready to meet people and welcome them to my home <3",
+    "isLoggedIn": true
+  }
+]

@@ -3,7 +3,7 @@ const { AuthenticationError } = require("./utils/errors");
 const resolvers = {
   Query: {
     user: async (_, { id }, { dataSources }) => {
-      const user = await dataSources.accountsAPI.getUser(id);
+      const user = await dataSources.db.getUser(id);
       if (!user) {
         throw new Error("No user found for this Id");
       }
@@ -23,7 +23,7 @@ const resolvers = {
     ) => {
       if (!userId) throw AuthenticationError();
       try {
-        const updatedUser = await dataSources.accountsAPI.updateUser({
+        const updatedUser = await dataSources.db.updateUser({
           userId,
           userInfo: updateProfileInput,
         });
@@ -77,7 +77,7 @@ const resolvers = {
       return user.description;
     },
     lastActiveTime: (user) => {
-      return user.lastActiveTime.toString();
+      return user.lastActiveTime?.toString();
     },
   },
 };

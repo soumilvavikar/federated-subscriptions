@@ -50,6 +50,12 @@ However you will also need to run the `db:generate` command.
 npm run db:generate
 ```
 
+### Trouble with Prisma?
+
+If you're struggling to set up the Prisma database, you can switch to our JSON file setup instead. Jump to the `resolvers.js` file.
+
+Search for references to `dataSources.db` and swap them out for `dataSources.accountsAPI`. The same methods exist on this alternate class, but you'll be able to use a JSON file containing accounts data instead of the database.
+
 ### Launching Sandbox
 
 When you run `npm start` the server will begin running on port 4002. Open up [http://localhost:4002](http://localhost:4002) to access Sandbox. Sandbox is an environment where we can write and execute GraphQL operations.
