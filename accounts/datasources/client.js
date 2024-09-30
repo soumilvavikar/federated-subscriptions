@@ -4,7 +4,6 @@ class PrismaDbClient {
   prisma = new PrismaClient();
 
   getUser = async (username) => {
-    console.log("I got called with ", username);
     try {
       const user = await this.prisma.user.findUnique({
         where: {
