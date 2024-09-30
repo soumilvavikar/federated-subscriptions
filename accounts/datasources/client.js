@@ -10,7 +10,6 @@ class PrismaDbClient {
           username: username,
         },
       });
-      console.log({ user });
       return user;
     } catch (e) {
       console.log(e);
