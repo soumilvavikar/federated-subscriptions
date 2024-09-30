@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Gilbert Kane",
+    "username": "kane",
+    "conversations": []
+  },
+  {
+    "name": "Ellen Ripley",
+    "username": "ripley",
+    "conversations": [
+      "xeno-ripley-chat"
+    ]
+  },
+  {
+    "name": "Captain Dallas",
+    "username": "dallas",
+    "conversations": []
+  },
+  {
+    "name": "Xeno",
+    "username": "xeno",
+    "conversations": [
+      "xeno-ripley-chat"
+    ]
+  }
+]

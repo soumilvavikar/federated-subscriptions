@@ -5,7 +5,7 @@ const filename = "./accounts_data.json";
 // Use this datasource if Prisma DB fails for any reason
 class AccountsAPI {
   getUsers() {
-    const data = fs.readFileSync("./datasources/accounts_data.json");
+    const data = fs.readFileSync("./datasources/accounts_data.json", "utf8");
     const users = JSON.parse(data);
     return users;
   }

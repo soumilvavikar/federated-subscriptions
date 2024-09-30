@@ -3,7 +3,7 @@ import { Resolvers } from "../__generated__/resolvers-types";
 export const Mutation: Resolvers = {
   Mutation: {
     createConversation: async (_, { recipientId }, { dataSources, userId }) => {
-      return dataSources.db.createNewConversation({ userId, recipientId })
+      return dataSources.messagesAPI.createNewConversation({ userId, recipientId })
     },
     // sendMessage: async (_, { message }, { dataSources, userId }) => {
     //   const { conversationId, text } = message;
