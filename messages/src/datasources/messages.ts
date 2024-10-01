@@ -86,7 +86,7 @@ export class MessagesAPI {
       throw ConversationNotFoundError()
     }
     
-    const sentTime = Date.now()
+    const sentTime = new Date()
     const conversation = this.getConversation(conversationId)
     const participantIds = this.getConversationParticipants(conversationId)
     const [recipient] = participantIds.filter((id) => id !== userId);
@@ -105,13 +105,13 @@ export class MessagesAPI {
     );
 
 
-    return Promise.resolve({
+    return {
       id: nextId,
       text,
       sentTime,
       sentTo: recipient,
       sentFrom: userId
-    })
+    }
 
   }
 
