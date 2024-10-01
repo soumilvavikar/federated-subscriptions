@@ -6,5 +6,10 @@ export const User: Resolvers = {
       const user = await dataSources.db.getUserDetails(id)
       return { ...attributes, ...user, id: user.username  }
     },
+    //
+    // __resolveReference: async ({ id, ...attributes }, { dataSources }) => {
+    //   const user = await dataSources.messagesAPI.getUserDetails(id)
+    //   return { ...attributes, ...user, id: user.username  }
+    // },
   }
 }
