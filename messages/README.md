@@ -78,6 +78,12 @@ However you will also need to run the `db:generate` command.
 npm run db:generate
 ```
 
+### Trouble with Prisma?
+
+If you're struggling to set up the Prisma database, you can switch to our JSON file setup instead. Jump to the `resolvers` directory.
+
+Each applicable resolver file contains optional code for you to uncomment instead of the default functions. Rather than using the `db` that we've set on our server's context (accessing the Prisma database), they make use of `messagesAPI`, which is a class instance with methods that operate on a separate JSON file. It has all of the same methods as the Prisma client, but you'll be able to use a JSON file containing messages data instead of a database.
+
 ### Launching Sandbox
 
 When you run `npm run dev` the server will begin running on port 4001. Open up [http://localhost:4001](http://localhost:4001) to access Sandbox. Sandbox is an environment where we can write and execute GraphQL operations.
