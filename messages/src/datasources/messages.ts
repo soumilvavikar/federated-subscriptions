@@ -49,15 +49,17 @@ export class MessagesAPI {
 
   getConversation(id: string): Conversation {
     const conversations = this.getConversations()
-    return conversations.find((conv) => conv.id === id)
+    const conversation = conversations.find((conv) => conv.id === id)
+    return conversation
   }
 
-  async findUserConversations(userId: string): Promise<Conversation[]> {
+
+  findUserConversations(userId: string): Conversation[] {
     const participant = this.getParticipant(userId);
     const { conversations } = participant;
 
     const matchedConversations = conversations.map((convId) => this.getConversation(convId))
-    return Promise.resolve(matchedConversations)
+    return matchedConversations
   }
 
   async findUserConversationWithRecipient({ recipientId, userId }: { recipientId: string, userId: string }): Promise<Conversation> {
@@ -92,7 +94,7 @@ export class MessagesAPI {
     const [recipient] = participantIds.filter((id) => id !== userId);
     const { messages = [], ...attributes } = conversation
     const nextId = messages?.length
-    const newMessages = [...messages, { id: nextId, text, sentTime }]
+    const newMessages = [...messages, { id: nextId, text, sentTime, sentFrom: userId, sentTo: recipient }]
     
     const newConversation = { ...attributes, messages: newMessages }
     const allOtherConversations = this.getConversations().filter(({ id }) => id !== conversationId)
