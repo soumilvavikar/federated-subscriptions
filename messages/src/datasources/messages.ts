@@ -94,7 +94,7 @@ export class MessagesAPI {
     const nextId = messages?.length
     const newMessages = [...messages, { id: nextId, text, sentTime }]
     
-    const newConversation = { ...attributes, ...newMessages }
+    const newConversation = { ...attributes, messages: newMessages }
     const allOtherConversations = this.getConversations().filter(({ id }) => id !== conversationId)
 
     const compiledConversations = [...allOtherConversations, newConversation]
@@ -185,8 +185,10 @@ export class MessagesAPI {
     return [sender, recipient]
   }
 
-   // getMessagesAfterDate() {
-
-  // }
+   getMessagesAfterDate(timestampMs: number, conversationId: string) {
+    const { messages = [] } = this.getConversation(conversationId)
+    const messagesSentAfterTimestamp = messages.filter(({ sentTime }) => sentTime >= new Date(timestampMs))
+    return messagesSentAfterTimestamp
+  }
 
 }
