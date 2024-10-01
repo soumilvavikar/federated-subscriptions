@@ -10,8 +10,9 @@ export const Message: Resolvers = {
       const receiver = await dataSources.db.getUserDetails(sentTo ?? receiverId);
       return receiver;
     }
+    // 
     /* IF PRISMA DOES NOT WORK FOR YOU, UNCOMMENT THESE RESOLVERS INSTEAD: */
-    // sentFrom: async ({ sentFrom, senderId }, _, { dataSources }) => {
+    // sentFrom: async ({sentFrom, senderId}, _, { dataSources }) => {
     //   const sender = dataSources.messagesAPI.getUserDetails(sentFrom ?? senderId);
     //   return sender;
     // }, 

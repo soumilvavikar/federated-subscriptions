@@ -11,5 +11,16 @@ export const Conversation: Resolvers = {
         text
       })) : []
     }
+
+    /* IF PRISMA DOES NOT WORK FOR YOU, USE THIS RESOLVER INSTEAD */
+    // messages: ({messages}) => {
+    //   return messages?.length ? messages.map(({ id, sentTime, text, sentFrom, sentTo }) => ({
+    //     id,
+    //     sentTime,
+    //     sentFrom,
+    //     sentTo,
+    //     text
+    //   })) : []
+    // }
   }
 }

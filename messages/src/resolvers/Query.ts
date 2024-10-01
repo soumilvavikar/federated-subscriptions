@@ -10,7 +10,8 @@ export const Query: Resolvers = {
     }
     /* IF PRISMA DOES NOT WORK FOR YOU, UNCOMMENT THESE RESOLVERS INSTEAD: */
     // conversations: async (_, __, { dataSources, userId }) => {
-    //   return dataSources.messagesAPI.findUserConversations(userId);
+    //   const conversations =  dataSources.messagesAPI.findUserConversations(userId);
+    //   return conversations
     // },
     // conversation: async (_, { recipientId }, { dataSources, userId }) => {
     //   return dataSources.messagesAPI.findUserConversationWithRecipient({ recipientId, userId });
