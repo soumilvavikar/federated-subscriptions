@@ -88,8 +88,10 @@ export class MessagesAPI {
     
     const sentTime = Date.now()
     const conversation = this.getConversation(conversationId)
-    const { messages, ...attributes } = conversation
-    const nextId = messages.length
+    const participantIds = this.getConversationParticipants(conversationId)
+    const [recipient] = participantIds.filter((id) => id !== userId);
+    const { messages = [], ...attributes } = conversation
+    const nextId = messages?.length
     const newMessages = [...messages, { id: nextId, text, sentTime }]
     
     const newConversation = { ...attributes, ...newMessages }
@@ -102,18 +104,24 @@ export class MessagesAPI {
       JSON.stringify(compiledConversations, null, 2),
     );
 
-    return {
+
+    return Promise.resolve({
       id: nextId,
       text,
-      sentTime
-    }
+      sentTime,
+      sentTo: recipient,
+      sentFrom: userId
+    })
 
   }
 
 
   getUserDetails(id: string) {
     const participant = this.getParticipant(id)
-    return participant
+    return {
+      ...participant,
+      id: participant?.username
+    }
   }
 
 
@@ -172,7 +180,10 @@ export class MessagesAPI {
     return retrievedConversation
   }
 
-  // getConversationParticipants() {}
+  getConversationParticipants(conversationId: string) {
+    const [sender, recipient] = conversationId.split("-")
+    return [sender, recipient]
+  }
 
    // getMessagesAfterDate() {
 
