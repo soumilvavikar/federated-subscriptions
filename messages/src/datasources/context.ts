@@ -1,6 +1,6 @@
 import { StandaloneServerContextFunctionArgument } from "@apollo/server/dist/esm/standalone";
 import { PrismaDbClient } from "./prisma/client"
-import {MessagesAPI} from "./messages"
+import { MessagesAPI } from "./messages"
 
 export const createContext = async ({ req }: StandaloneServerContextFunctionArgument) => {
   const token = req.headers.authorization || "";
