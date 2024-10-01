@@ -146,13 +146,15 @@ export class PrismaDbClient {
       }
 
       const [{ conversation: matchedConversation}] = matchedConversationArray;
-
   
       // Now fetch additional details about this conversation using the ID we found
       const { id: conversationId, openedTime, ...conversationAttributes } = await this.prisma.conversation.findUnique({
         where: {
           id: matchedConversation.id 
         },
+        include: {
+          messages: true
+        }
       })
     
     return {
