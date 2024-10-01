@@ -78,7 +78,35 @@ export class MessagesAPI {
     return matchedConversation[0]
   }
 
-  sendMessageToConversation() {
+  sendMessageToConversation({ conversationId, text, userId }: { conversationId: string; text: string; userId: string }) {
+    const user = this.getUserDetails(userId)
+    const { conversations } = user;
+
+    if (!conversations.includes(conversationId)) {
+      throw ConversationNotFoundError()
+    }
+    
+    const sentTime = Date.now()
+    const conversation = this.getConversation(conversationId)
+    const { messages, ...attributes } = conversation
+    const nextId = messages.length
+    const newMessages = [...messages, { id: nextId, text, sentTime }]
+    
+    const newConversation = { ...attributes, ...newMessages }
+    const allOtherConversations = this.getConversations().filter(({ id }) => id !== conversationId)
+
+    const compiledConversations = [...allOtherConversations, newConversation]
+
+    fs.writeFileSync(
+      conversationsFilePath,
+      JSON.stringify(compiledConversations, null, 2),
+    );
+
+    return {
+      id: nextId,
+      text,
+      sentTime
+    }
 
   }
 
