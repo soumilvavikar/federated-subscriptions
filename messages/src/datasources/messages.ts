@@ -189,7 +189,7 @@ export class MessagesAPI {
 
    getMessagesAfterDate(timestampMs: number, conversationId: string) {
     const { messages = [] } = this.getConversation(conversationId)
-    const messagesSentAfterTimestamp = messages.filter(({ sentTime }) => sentTime >= new Date(timestampMs))
+    const messagesSentAfterTimestamp = messages.filter(({ sentTime }) => new Date(sentTime) >= new Date(timestampMs))
     return messagesSentAfterTimestamp
   }
 
