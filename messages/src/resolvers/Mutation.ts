@@ -35,7 +35,7 @@ export const Mutation: Resolvers = {
     // createConversation: async (_, { recipientId }, { dataSources, userId }) => {
     //   return dataSources.messagesAPI.createNewConversation({ userId, recipientId })
     // },
-    // sendMessage: async (_, { message }, { dataSources, pubsub, userId }) => {
+    // sendMessage: async (_, { message }, { dataSources, userId }) => {
     //   const { conversationId, text } = message;
     //   const {
     //     id,
