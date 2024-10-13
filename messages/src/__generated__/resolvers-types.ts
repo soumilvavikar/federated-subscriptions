@@ -39,11 +39,17 @@ export type Message = {
 export type Mutation = {
   __typename?: 'Mutation';
   createConversation?: Maybe<Conversation>;
+  sendMessage?: Maybe<Message>;
 };
 
 
 export type MutationCreateConversationArgs = {
   recipientId: Scalars['ID']['input'];
+};
+
+
+export type MutationSendMessageArgs = {
+  message: NewMessageInput;
 };
 
 export type NewMessageInput = {
@@ -60,6 +66,16 @@ export type Query = {
 
 export type QueryConversationArgs = {
   recipientId: Scalars['ID']['input'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  listenForMessageInConversation?: Maybe<Message>;
+};
+
+
+export type SubscriptionListenForMessageInConversationArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type User = {
@@ -157,6 +173,7 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<{}>;
   NewMessageInput: NewMessageInput;
   Query: ResolverTypeWrapper<{}>;
+  Subscription: ResolverTypeWrapper<{}>;
   User: ResolverTypeWrapper<UserRepresentation>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 }>;
@@ -170,6 +187,7 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: {};
   NewMessageInput: NewMessageInput;
   Query: {};
+  Subscription: {};
   User: UserRepresentation;
   Boolean: Scalars['Boolean']['output'];
 }>;
@@ -192,11 +210,16 @@ export type MessageResolvers<ContextType = DataSourceContext, ParentType extends
 
 export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createConversation?: Resolver<Maybe<ResolversTypes['Conversation']>, ParentType, ContextType, RequireFields<MutationCreateConversationArgs, 'recipientId'>>;
+  sendMessage?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<MutationSendMessageArgs, 'message'>>;
 }>;
 
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   conversation?: Resolver<Maybe<ResolversTypes['Conversation']>, ParentType, ContextType, RequireFields<QueryConversationArgs, 'recipientId'>>;
   conversations?: Resolver<Maybe<Array<Maybe<ResolversTypes['Conversation']>>>, ParentType, ContextType>;
+}>;
+
+export type SubscriptionResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
+  listenForMessageInConversation?: SubscriptionResolver<Maybe<ResolversTypes['Message']>, "listenForMessageInConversation", ParentType, ContextType, RequireFields<SubscriptionListenForMessageInConversationArgs, 'id'>>;
 }>;
 
 export type UserResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
@@ -210,6 +233,7 @@ export type Resolvers<ContextType = DataSourceContext> = ResolversObject<{
   Message?: MessageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;
 

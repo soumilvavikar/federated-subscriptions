@@ -5,31 +5,42 @@ export const Mutation: Resolvers = {
     createConversation: async (_, { recipientId }, { dataSources, userId }) => {
       return dataSources.db.createNewConversation({ userId, recipientId })
     },
-    // sendMessage: async (_, { message }, { dataSources, userId }) => {
-    //   const { conversationId, text } = message;
-    //   const {
-    //     id,
-    //     text: messageText,
-    //     sentFrom,
-    //     sentTo,
-    //     sentTime,
-    //     ...messageAttributes
-    //   } = await dataSources.db.sendMessageToConversation({
-    //     conversationId,
-    //     text,
-    //     userId,
-    //   });
-    
-    //   // Return all of the message that was created
-    //   return {
-    //     id,
-    //     text: messageText,
-    //     sentFrom,
-    //     sentTo,
-    //     sentTime,
-    //     ...messageAttributes,
-    //   };
-    // }
+    sendMessage: async (_, { message }, { pubsub, dataSources, userId }) => {
+      const { conversationId, text } = message;
+      const {
+        id,
+        text: messageText,
+        sentFrom,
+        sentTo,
+        sentTime,
+        ...messageAttributes
+      } = await dataSources.db.sendMessageToConversation({
+        conversationId,
+        text,
+        userId,
+      });
+
+      //await pubsub.publish("New Message Sent", {});
+      await pubsub.publish("NEW_MESSAGE_SENT", {
+        listenForMessageInConversation: {
+          id,
+          text: messageText,
+          sentFrom,
+          sentTo,
+          sentTime,
+        },
+      });
+
+      // Return all of the message that was created
+      return {
+        id,
+        text: messageText,
+        sentFrom,
+        sentTo,
+        sentTime,
+        ...messageAttributes,
+      };
+    }
 
     /* IF PRISMA DOES NOT WORK FOR YOU, UNCOMMENT THESE RESOLVERS INSTEAD: */
     // createConversation: async (_, { recipientId }, { dataSources, userId }) => {
@@ -50,7 +61,7 @@ export const Mutation: Resolvers = {
     //     userId,
     //   });
 
-    
+
     //   // Return all of the message that was created
     //   return {
     //     id,

@@ -12,3 +12,14 @@ headers:
     request:
       - propagate:
           named: "Authorization"
+
+subscription:
+  enabled: true
+  mode:
+    callback:
+      public_url: http://127.0.0.1:4000/callback
+      listen: 127.0.0.1:4000
+      path: /callback
+      heartbeat_interval: 5s
+      subgraphs:
+        - messages
