@@ -1,21 +1,19 @@
 # The Messages subgraph
 
-Hello and welcome to the `messages` subgraph. We're happy you're here!
+Hello and welcome to the `messages` subgraph.
 
 ## What's `messages` all about?
 
-In this workshop, we'll bring realtime data capabilities into our `messages` subgraph server.
+In this codebase, we'll bring realtime data capabilities into our `messages` subgraph server.
 
-`messages` is one of three subgraphs we'll investigate as part of building our workshop project, Airlock. Airlock is an intergalactic travel booking app that lets you view listings, make bookings, and (coming up shortly!) chat with hosts and ask questions.
+`messages` is one of three subgraphs we are investigating as part of building our sample project, Airlock. Airlock is an intergalactic travel booking app that lets you view listings, make bookings, and (coming up shortly!) chat with hosts and ask questions.
 
-In our time together, we will:
+Here, we will:
 
 - Set up federated subscriptions, using the router and HTTP callbacks
 - Configure the `Subscription` type, and define its resolver
 - Utilize the `PubSub` class to both _publish_ and _subscribe_ to particular events
 - Tackle a whole lot of optimizations for subscribing to data _across_ our graph!
-
-So, let's get going!
 
 ## Prerequisites
 
@@ -23,9 +21,19 @@ To run this repository, you'll need Node and a terminal. As part of the workshop
 
 ## Get started
 
-1. First, set up the project by installing dependencies with `npm install`.
-1. As part of the `postinstall` script, the database will be automatically seeded.
-1. Next, launch the project with `npm run dev`!
+First, set up the project by installing dependencies
+
+```shell
+npm install
+```
+
+As part of the `postinstall` script, the database will be automatically seeded.
+
+Next, launch the project
+
+```shell
+npm run dev
+```
 
 As we proceed through the workshop, we'll install additional dependencies and walk through how to publish our schema changes to Studio.
 
@@ -35,13 +43,13 @@ This repository contains a database built with Prisma. It's set up to run the mi
 
 Run the following command to generate a migration that updates and seeds the database.
 
-```
+```shell
 npx prisma migrate dev
 ```
 
 This will create our SQLite database. Optionally, you can provide a name for this migration. If it completes successfully, you should see the following output:
 
-```
+```text
 Running seed command `ts-node src/datasources/prisma/seed.ts` ...
 {
   captain: { id: 1, name: 'Captain Dallas', role: 'guest' },
@@ -56,7 +64,7 @@ Running seed command `ts-node src/datasources/prisma/seed.ts` ...
 
 We can also use **Prisma Studio** to inspect our database on a local port.
 
-```
+```shell
 npx prisma studio
 ```
 
@@ -68,29 +76,33 @@ This will start us with four entries in the `User` table, and one entry in the `
 
 There is also a seed command in `package.json` that you can run to set up the database.
 
-```
+```shell
 npm run db:seed
 ```
 
 However you will also need to run the `db:generate` command.
 
-```
+```shell
 npm run db:generate
 ```
 
 ### Trouble with Prisma?
 
-If you're struggling to set up the Prisma database, you can switch to our JSON file setup instead. Jump to the `resolvers` directory.
+If you're struggling to set up the Prisma database, you can switch to JSON file setup instead. Jump to the `resolvers` directory.
 
 Each applicable resolver file contains optional code for you to uncomment instead of the default functions. Rather than using the `db` that we've set on our server's context (accessing the Prisma database), they make use of `messagesAPI`, which is a class instance with methods that operate on a separate JSON file. It has all of the same methods as the Prisma client, but you'll be able to use a JSON file containing messages data instead of a database.
 
 ### Launching Sandbox
 
+```shell
+npm run dev
+```
+
 When you run `npm run dev` the server will begin running on port 4001. Open up [http://localhost:4001](http://localhost:4001) to access Sandbox. Sandbox is an environment where we can write and execute GraphQL operations.
 
 If your database is setup correctly, you can run the following query:
 
-```
+```graphql
 query GetConversation {
   conversation(id: "1") {
     id
@@ -111,7 +123,7 @@ To create a new conversation, we can run a `createConversation` mutation, provid
 
 In Sandbox, open up the _Headers_ panel at the bottom of the _Operation_ workspace. Add a new header called "Authorization", and provide a value of "Bearer 1" (or any other ID that currently exists in the database).
 
-```
+```graphql
 "Authorization" "Bearer 1"
 ```
 
