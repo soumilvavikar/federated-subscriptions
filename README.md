@@ -685,6 +685,7 @@ export const Subscription: Resolvers = {
 ### Step 4: Update the `Subscription`
 
 **Operation**:
+
 ```graphql
 subscription SubscribeToMessagesInConversationWithMsgRecievedAt(
   $listenForMessageInConversationId: ID!
