@@ -20,7 +20,10 @@ type Mutation {
 
 type Subscription {
   # Start a new subscription for messages in a particular conversation, with an optional timestamp cursor to replay from
-  listenForMessageInConversation(id: ID!): Message
+  listenForMessageInConversation(
+    id: ID!
+    fromMessageReceivedAt: String
+  ): Message
 }
 
 type Conversation {
@@ -52,4 +55,10 @@ input NewMessageInput {
 
 type User @key(fields: "id") {
   id: ID!
+  "The status indicating whether a user is online"
+  isOnline: Boolean! @requires(fields: "isLoggedIn lastActiveTime")
+  "The last recorded activity timestamp of the user"
+  lastActiveTime: String @external
+  "Whether or not a user is logged in"
+  isLoggedIn: Boolean! @external
 }
